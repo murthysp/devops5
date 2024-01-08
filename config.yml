@@ -4,36 +4,49 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.7
-    working_directory: ~/devops
-    
+    working_directory: ~/project
+
     steps:
       - checkout
       - run:
-          name: install dependencies
+          name: Install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
 
-      - run: 
-          name: run tests
+      - run:
+          name: Run tests and linting
           command: |
             . venv/bin/activate
             flake8 --exclude=env* --statistics
             pytest --junitxml=test-results/junit.xml
-      
-      - store_test_results: 
-          path: test-results
 
-      - store_artifacts:
-          path: test-results
+  deploy:
+    docker:
+      - image: circleci/python:3.7
+    working_directory: ~/project
+
+    steps:
+      - checkout
+      - run:
+          name: Deploy to DEPLOY-{CURRENT_DATE}
+          command: |
+            mkdir -p "DEPLOY-$(date +'%Y%m%d')"
+            # Add your deployment commands here, for example:
+            cp -r * "DEPLOY-$(date +'%Y%m%d')/"
 
 workflows:
   version: 2
-  build:
+  build_and_deploy:
     jobs:
       - build:
           filters:
             branches:
               only: main
-
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
