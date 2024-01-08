@@ -3,14 +3,6 @@ certifi==2020.6.20
 chardet==4.0.0
 click==8.0.3
 colorama==0.4.4
-coverage==7.4.0
-cryptography==3.4.8
-cupshelpers==1.0
-dbus-python==1.2.18
-defer==1.0.6
-distro==1.7.0
-distro-info==1.1+ubuntu0.1
-exceptiongroup==1.2.0
 flake8==7.0.0
 httplib2==0.20.2
 idna==3.3
